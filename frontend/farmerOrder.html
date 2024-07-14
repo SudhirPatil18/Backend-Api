@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer Order Management</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-field, .address-field {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .submit-btn {
+            width: 100px;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .actions {
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 style="text-align: center; margin-top: 20px;">Farmer Orders</h1>
+    
+    <!-- Order Form -->
+    <div class="order-form">
+        <form id="shopForm">
+            <label for="name">Shop Name</label>
+            <input type="text" id="name" name="name" class="input-field" required>
+
+            <label for="orders">Orders Products</label>
+            <textarea id="orders" name="orders" class="input-field" placeholder="Enter Orders Products" rows="5" required></textarea>
+
+            <label for="address">Our Address</label>
+            <textarea id="address" name="address" class="address-field" placeholder="Enter Address" rows="3" required></textarea>
+
+            <button type="submit" class="submit-btn">Submit</button>
+            <button type="button" class="submit-btn" onclick="resetForm()">Cancel</button>
+        </form>
+    </div>
+
+    <!-- Order Table -->
+    <div class="order-table">
+        <table id="ordersTable">
+            <thead>
+                <tr>
+                    <th>Shop Name</th>
+                    <th>Orders Products</th>
+                    <th>Our Address</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="ordersTableBody">
+                <!-- Table rows will be dynamically added here -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Fetch existing orders when the page loads
+        fetchOrders();
+
+        // Form submit event listener
+        document.getElementById('shopForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const orderData = {
+                name: formData.get('name'),
+                orders: formData.get('orders'),
+                address: formData.get('address')
+            };
+
+            saveOrder(orderData);
+        });
+    });
+
+    // Function to fetch orders from the server
+    function fetchOrders() {
+        fetch('http://localhost:3000/api/orders')
+            .then(response => response.json())
+            .then(orders => {
+                const ordersTableBody = document.getElementById('ordersTableBody');
+                ordersTableBody.innerHTML = '';
+                orders.forEach(order => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${order.name}</td>
+                        <td>${order.orders}</td>
+                        <td>${order.address}</td>
+                        <td class="actions">
+                            <button onclick="editOrder('${order._id}', '${order.name}', '${order.orders}', '${order.address}')">Edit</button>
+                            <button onclick="deleteOrder('${order._id}')">Delete</button>
+                        </td>
+                    `;
+                    ordersTableBody.appendChild(tr);
+                });
+            })
+            .catch(error => console.error('Error fetching orders:', error));
+    }
+
+    // Function to save new order or update existing order
+    function saveOrder(orderData) {
+        let url = 'http://localhost:3000/api/orders';
+        let method = 'POST';
+
+        const orderId = document.getElementById('shopForm').getAttribute('data-id');
+        if (orderId) {
+            url += `/${orderId}`;
+            method = 'PUT';
+        }
+
+        fetch(url, {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(orderData),
+        })
+            .then(response => response.json())
+            .then(() => {
+                fetchOrders();
+                document.getElementById('shopForm').reset();
+                document.getElementById('shopForm').removeAttribute('data-id');
+            })
+            .catch(error => console.error('Error saving order:', error));
+    }
+
+    // Function to edit an existing order
+    function editOrder(id, name, orders, address) {
+        document.getElementById('name').value = name;
+        document.getElementById('orders').value = orders;
+        document.getElementById('address').value = address;
+        document.getElementById('shopForm').setAttribute('data-id', id);
+    }
+
+    // Function to delete an order
+    function deleteOrder(id) {
+        fetch(`http://localhost:3000/api/orders/${id}`, {
+            method: 'DELETE',
+        })
+            .then(response => response.json())
+            .then(() => fetchOrders())
+            .catch(error => console.error('Error deleting order:', error));
+    }
+
+    // Function to reset form on cancel
+    function resetForm() {
+        document.getElementById('shopForm').reset();
+        document.getElementById('shopForm').removeAttribute('data-id');
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="/images/logo1.jpeg" rel="icon">
+  <title>Registration Forms</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      padding: 20px;
+      text-align: center;
+    }
+
+    .form-container, .data-container {
+      display: none;
+      width: 100%;
+      max-width: 1200px;
+      background-color: white;
+      margin: 20px auto;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .input-field {
+      width: calc(100% - 22px);
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 10px;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    .submit-btn:hover {
+      background-color: darkred;
+    }
+
+    .button {
+      padding: 10px 20px;
+      margin: 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .button:hover {
+      background-color: #0056b3;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+      text-align: left;
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .data-list {
+      text-align: left;
+      margin-top: 20px;
+      overflow-x: auto;
+    }
+
+    .data-list h2 {
+      text-align: center;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: center;
+      border: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+    }
+
+    .action-buttons button {
+      margin: 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+
+    .action-buttons button.edit-btn {
+      background-color: #28a745;
+      color: white;
+      border: none;
+    }
+
+    .action-buttons button.edit-btn:hover {
+      background-color: #218838;
+    }
+
+    .action-buttons button.delete-btn {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+    }
+
+    .action-buttons button.delete-btn:hover {
+      background-color: #c82333;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <button class="button" onclick="showForm('customerFormContainer')">Add Customer</button>
+    <button class="button" onclick="showForm('shopFormContainer')">Add Shop</button>
+    <button class="button" onclick="showForm('farmerFormContainer')">Add Farmer</button>
+    <button class="button" onclick="fetchData('customers')">Manage Customers</button>
+    <button class="button" onclick="fetchData('shops')">Manage Shops</button>
+    <button class="button" onclick="fetchData('farmers')">Manage Farmers</button>
+
+    <div id="customerFormContainer" class="form-container">
+      <h1>Customer Registration</h1>
+      <form id="customerForm" onsubmit="handleSubmit(event, 'customers')">
+        <label for="customerName">Name</label>
+        <input type="text" id="customerName" name="name" class="input-field" placeholder="Enter name" required>
+
+        <label for="customerSurname">Surname</label>
+        <input type="text" id="customerSurname" name="surname" class="input-field" placeholder="Enter surname" required>
+
+        <label for="customerPhone">Phone Number</label>
+        <input type="tel" id="customerPhone" name="phone" class="input-field" placeholder="Enter phone number" required>
+
+        <label for="customerEmail">Email</label>
+        <input type="email" id="customerEmail" name="email" class="input-field" placeholder="Enter email" required>
+
+        <label for="customerAddress">Address</label>
+        <input type="text" id="customerAddress" name="address" class="input-field" placeholder="Enter address" required>
+
+        <label for="customerPassword">Password</label>
+        <input type="password" id="customerPassword" name="password" class="input-field" placeholder="Enter password" required pattern=".{6,}" title="Password must be at least 6 characters long">
+
+
+        <label for="customerConfirmPassword">Confirm Password</label>
+        <input type="password" id="customerConfirmPassword" name="confirmPassword" class="input-field" placeholder="Confirm password" required oninput="validatePassword(this)">
+
+        <button type="submit" class="submit-btn">Register</button>
+      </form>
+    </div>
+
+    <div id="shopFormContainer" class="form-container">
+      <h1>Shop Registration</h1>
+      <form id="shopForm" onsubmit="handleSubmit(event, 'shops')">
+        <label for="shopName">Shop Name</label>
+        <input type="text" id="shopName" name="name" class="input-field" placeholder="Enter shop name" required>
+
+        <label for="shopAddress">Address</label>
+        <input type="text" id="shopAddress" name="address" class="input-field" placeholder="Enter address" required>
+
+        <label for="shopPhone">Phone Number</label>
+        <input type="tel" id="shopPhone" name="phone" class="input-field" placeholder="Enter phone number" required>
+
+        <label for="shopPhoto">Shop Photo</label>
+        <input type="file" id="shopPhoto" name="shopPhoto" class="input-field">
+
+        <label for="shopAadhar">Aadhar Card</label>
+        <input type="file" id="shopAadhar" name="aadharCard" class="input-field">
+
+        <label for="shopPan">PAN Card</label>
+        <input type="file" id="shopPan" name="panCard" class="input-field">
+
+        <label for="shopIdVerification">ID Verification</label>
+        <input type="file" id="shopIdVerification" name="idVerification" class="input-field">
+
+        <label for="shopPhoneVerification">Phone Number Verification</label>
+        <input type="file" id="shopPhoneVerification" name="phoneVerification" class="input-field">
+
+        <label for="shopUsername">Username</label>
+        <input type="text" id="shopUsername" name="username" class="input-field" placeholder="Enter username" required>
+        
+        <label for="shopPassword">Password</label>
+        <input type="password" id="shopPassword" name="password" class="input-field" placeholder="Enter password"  title="Password must be at least 6 characters long">
+        
+        <!-- <label for="confirmPassword">confirmPassword</label>
+        <input type="password" id="shopConfirmPassword" name="confirmPassword" class="input-field" placeholder="Confirm password" required oninput="validatePassword('shopPassword', this)"> -->
+
+        <button type="submit" class="submit-btn">Register</button>
+      </form>
+    </div>
+
+    <div id="farmerFormContainer" class="form-container">
+      <h1>Farmer Registration</h1>
+      <form id="farmerForm" onsubmit="handleSubmit(event, 'farmers')">
+        <label for="farmerName">Name</label>
+        <input type="text" id="farmerName" name="name" class="input-field" placeholder="Enter name" required>
+
+        <label for="farmerSurname">Surname</label>
+        <input type="text" id="farmerSurname" name="surname" class="input-field" placeholder="Enter surname" required>
+
+        <label for="farmerAddress">Address</label>
+        <input type="text" id="farmerAddress" name="address" class="input-field" placeholder="Enter address" required>
+
+        <label for="farmerPhone">Phone Number</label>
+        <input type="tel" id="farmerPhone" name="phone" class="input-field" placeholder="Enter phone number" required>
+
+        <label for="farmerAadhar">Aadhar Card Number</label>
+        <input type="text" id="farmerAadhar" name="aadharCard" class="input-field" placeholder="Enter Aadhar card number" required>
+
+        <!-- <label for="farmerusername">Username</label>
+        <input type="text" id="farmerUsername" name="username" class="input-field" placeholder="Enter username" required>
+        
+        <label for="farmerPassword">Password</label>
+        <input type="password" id="famerPassword" name="farmerpassword" class="input-field" placeholder="Enter password" title="Password must be at least 6 characters long">
+        
+        <label for="confirmPassword">confirmPassword</label>
+        <input type="password" id="farmerConfirmPassword" name="confirmPassword" class="input-field" placeholder="Confirm password" required oninput="validatePassword('shopPassword', this)"> -->
+
+
+        <button type="submit" class="submit-btn">Register</button>
+      </form>
+    </div>
+
+    <div id="dataContainer" class="data-container">
+      <div id="dataList" class="data-list">
+        <!-- Data will be populated here -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+   const API_URL = 'http://localhost:3000/api'; // Adjust this according to your backend setup
+
+function showForm(formId) {
+  // Hide all forms and data containers
+  document.querySelectorAll('.form-container, .data-container').forEach(container => {
+    container.style.display = 'none';
+  });
+  function validatePassword(input) {
+  if (input.value !== document.getElementById('customerPassword').value) {
+    input.setCustomValidity('Passwords do not match');
+  } else {
+    input.setCustomValidity('');
+  }
+}
+
+  // Show the selected form
+  document.getElementById(formId).style.display = 'block';
+}
+
+function handleSubmit(event, type) {
+  event.preventDefault();
+
+  const form = event.target;
+  const formData = new FormData(form);
+  const data = Object.fromEntries(formData.entries());
+
+  fetch(`${API_URL}/${type}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      alert('Successfully registered!');
+      form.reset(); // Reset the form after successful registration
+      fetchData(type); // Refresh data after registration
+    } else {
+      alert('Registration failed: ' + data.message);
+    }
+  })
+  .catch(error => {
+    alert('An error occurred: ' + error.message);
+  });
+}
+
+function fetchData(type) {
+  fetch(`${API_URL}/${type}`)
+    .then(response => response.json())
+    .then(data => {
+      const dataList = document.getElementById('dataList');
+      dataList.innerHTML = `<h2>${type.charAt(0).toUpperCase() + type.slice(1)}</h2>`;
+      
+      // Create table structure
+      const table = document.createElement('table');
+      const headers = Object.keys(data[0]);
+
+      // Create table header
+      const headerRow = document.createElement('tr');
+      headers.forEach(headerText => {
+        const th = document.createElement('th');
+        th.textContent = headerText;
+        headerRow.appendChild(th);
+      });
+      const actionHeader = document.createElement('th');
+      actionHeader.textContent = 'Actions';
+      headerRow.appendChild(actionHeader);
+      table.appendChild(headerRow);
+
+      // Create table rows with data
+      data.forEach(item => {
+        const row = document.createElement('tr');
+        headers.forEach(header => {
+          const cell = document.createElement('td');
+          cell.textContent = item[header];
+          row.appendChild(cell);
+        });
+
+        // Create edit and delete buttons
+        const actionCell = document.createElement('td');
+        
+        const editBtn = document.createElement('button');
+        editBtn.textContent = 'Edit';
+        editBtn.classList.add('edit-btn');
+        editBtn.onclick = () => editItem(item._id, type, item); // Assuming '_id' is the unique identifier in your data
+        actionCell.appendChild(editBtn);
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'Delete';
+        deleteBtn.classList.add('delete-btn');
+        deleteBtn.onclick = () => deleteItem(item._id, type); // Assuming '_id' is the unique identifier in your data
+        actionCell.appendChild(deleteBtn);
+
+        row.appendChild(actionCell);
+        table.appendChild(row);
+      });
+
+      dataList.appendChild(table);
+      document.getElementById('dataContainer').style.display = 'block';
+    })
+    .catch(error => {
+      alert('An error occurred: ' + error.message);
+    });
+}
+
+function editItem(itemId, type, itemData) {
+  // Pre-fill the form with existing data
+  switch (type) {
+    case 'customers':
+      document.getElementById('customerName').value = itemData.name;
+      document.getElementById('customerSurname').value = itemData.surname;
+      document.getElementById('customerPhone').value = itemData.phone;
+      document.getElementById('customerEmail').value = itemData.email;
+      document.getElementById('customerAddress').value = itemData.address;
+      break;
+    case 'shops':
+      document.getElementById('shopName').value = itemData.name;
+      document.getElementById('shopAddress').value = itemData.address;
+      document.getElementById('shopPhone').value = itemData.phone;
+      break;
+    case 'farmers':
+      document.getElementById('farmerName').value = itemData.name;
+      document.getElementById('farmerSurname').value = itemData.surname;
+      document.getElementById('farmerAddress').value = itemData.address;
+      document.getElementById('farmerPhone').value = itemData.phone;
+      break;
+    default:
+      break;
+  }
+
+  // Show the form for editing
+  showForm(`${type.charAt(0)}ormContainer`); // Adjust this based on your form IDs
+}
+
+function deleteItem(itemId, type) {
+  if (confirm(`Are you sure you want to delete this ${type}?`)) {
+    fetch(`${API_URL}/${type}/${itemId}`, {
+      method: 'DELETE'
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        alert(`Successfully deleted ${type} with ID: ${itemId}`);
+        fetchData(type); // Refresh data after deletion
+      } else {
+        alert('Deletion failed: ' + data.message);
+      }
+    })
+    .catch(error => {
+      alert('An error occurred: ' + error.message);
+    });
+  }
+}
+
+// Initial fetch data call
+fetchData('customers'); // Adjust this based on your initial display requirement
+
+  </script>
+</body>
+</html>

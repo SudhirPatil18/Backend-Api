@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopkeeper Dashboard</title>
+     <style>
+        /* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+}
+
+header h1 {
+    margin-bottom: 10px;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+nav ul li a:hover {
+    text-decoration: underline;
+}
+
+main {
+    padding: 20px;
+}
+
+form {
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+form label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+form input, form textarea, form select, form button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+form button {
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #0056b3;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+}
+
+header h1 {
+    margin-bottom: 10px;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+nav ul li a:hover {
+    text-decoration: underline;
+}
+
+main {
+    padding: 20px;
+}
+
+form {
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+form label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+form input,
+form textarea,
+form select,
+form button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+form button {
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #0056b3;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th,
+table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+}
+
+table th {
+    background-color: #f0f0f0;
+}
+
+.actions button {
+    margin-right: 5px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.actions .btn-edit {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.actions .btn-delete {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.actions button:hover {
+    opacity: 0.8;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 1.5em;
+    }
+
+    nav ul li {
+        display: block;
+        margin: 5px 0;
+    }
+
+    nav ul li a {
+        display: block;
+        padding: 10px;
+        background-color: #444;
+    }
+
+    form label,
+    form input,
+    form textarea,
+    form select,
+    form button {
+        width: 100%;
+    }
+
+    table, th, td {
+        display: block;
+        width: 100%;
+    }
+
+    table th, table td {
+        box-sizing: border-box;
+    }
+
+    table thead {
+        display: none;
+    }
+
+    table tr {
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 10px;
+        display: block;
+        position: relative;
+    }
+
+    table td {
+        display: block;
+        text-align: right;
+        padding-left: 50%;
+        text-align: left;
+        border: none;
+        border-bottom: 1px solid #ddd;
+        position: relative;
+    }
+
+    table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        font-weight: bold;
+    }
+
+    table td:last-child {
+        border-bottom: none;
+    }
+
+    .actions button {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+}
+
+
+table th, table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+}
+
+table th {
+    background-color: #f0f0f0;
+}
+
+.actions button {
+    margin-right: 5px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.actions .btn-edit {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.actions .btn-delete {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.actions button:hover {
+    opacity: 0.8;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 1.5em;
+    }
+
+    nav ul li {
+        display: block;
+        margin: 5px 0;
+    }
+
+    nav ul li a {
+        display: block;
+        padding: 10px;
+        background-color: #444;
+    }
+
+    form label, form input, form textarea, form select, form button {
+        width: 100%;
+    }
+
+    table, th, td {
+        display: block;
+        width: 100%;
+        margin-left: 50px;
+    }
+
+    table th, table td {
+        box-sizing: border-box;
+    }
+
+    table thead {
+        display: none;
+    }
+
+    table tr {
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    table td {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        border: none;
+        border-bottom: 1px solid #ddd;
+    }
+
+    table td:last-child {
+        border-bottom: none;
+    }
+
+    table td::before {
+        content: attr(data-label);
+        flex: 1;
+        font-weight: bold;
+    }
+
+    .actions button {
+        margin-bottom: 5px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
+
+     </style>
+</head>
+<body>
+    <header>
+        <h1 style="text-align: center;">Manage Post</h1>
+    </header>
+    <main>
+        <section id="add-post">
+          <h2 style="text-align: center; font-size: xx-large;">Add Product</h2>
+          <form id="postForm" style="width: 70%; margin-left: 15%;">
+            <label for="post-title">Title</label>
+            <input type="text" id="post-title" name="post-title" required>
+            <label for="post-description">Description</label>
+            <textarea id="post-description" name="post-description" required></textarea>
+            <label for="post-price">Price</label>
+            <input type="number" id="post-price" name="post-price" required>
+            <label for="post-category">Category</label>
+            <select id="post-category" name="post-category" >
+              <option value="">Select Category</option>
+            </select>
+            <label for="post-image">Image</label>
+            <input type="file" id="post-image" name="post-image" accept="image/*" required>
+            <button type="submit">Add Post</button>
+          </form>
+        </section>
+        <section id="manage-posts">
+          <h2 style="text-align: center; margin-top: 5%;">Manage Posts</h2>
+          <table id="postsTable">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Category</th>
+                <th>Image</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Posts will be dynamically added here -->
+            </tbody>
+          </table>
+        </section>
+      </main>
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          const postForm = document.getElementById('postForm');
+          const postsTableBody = document.querySelector('#postsTable tbody');
+          const postCategory = document.getElementById('post-category');
+          const apiUrl = 'http://localhost:3000/api';
+    
+          function fetchCategories() {
+            fetch(`${apiUrl}/categories`)
+              .then(response => response.json())
+              .then(categories => {
+                categories.forEach(category => {
+                  const option = document.createElement('option');
+                  option.value = category.name;
+                  option.textContent = category.name;
+                  postCategory.appendChild(option);
+                });
+              })
+              .catch(error => console.error('Error fetching categories:', error));
+          }
+    
+          function fetchPosts() {
+            fetch(`${apiUrl}/products`)
+              .then(response => response.json())
+              .then(products => {
+                renderPosts(products);
+              })
+              .catch(error => console.error('Error fetching products:', error));
+          }
+    
+          function renderPosts(posts) {
+            postsTableBody.innerHTML = '';
+            posts.forEach(post => {
+              const tr = document.createElement('tr');
+              tr.innerHTML = `
+                <td>${post.title}</td>
+                <td>${post.description}</td>
+                <td>₹${post.price.toFixed(2)}</td>
+                <td>${post.category}</td>
+                <td><img src="${post.image}" alt="${post.title}" width="50"></td>
+                <td class="actions">
+                  <button class="btn-edit" onclick="editPost('${post._id}')">Edit</button>
+                  <button class="btn-delete" onclick="deletePost('${post._id}')">Delete</button>
+                </td>
+              `;
+              postsTableBody.appendChild(tr);
+            });
+          }
+    
+          function addPost(post) {
+            fetch(`${apiUrl}/products`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(post)
+            })
+              .then(response => response.json())
+              .then(newPost => {
+                fetchPosts(); // Refresh the list of posts
+              })
+              .catch(error => console.error('Error adding product:', error));
+          }
+    
+          function updatePost(postId, updatedPost) {
+            fetch(`${apiUrl}/products/${postId}`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(updatedPost)
+            })
+              .then(response => response.json())
+              .then(updatedPost => {
+                fetchPosts(); // Refresh the list of posts
+              })
+              .catch(error => console.error('Error updating product:', error));
+          }
+    
+          function deletePost(postId) {
+            fetch(`${apiUrl}/products/${postId}`, {
+              method: 'DELETE'
+            })
+              .then(response => response.json())
+              .then(result => {
+                fetchPosts(); // Refresh the list of posts
+              })
+              .catch(error => console.error('Error deleting product:', error));
+          }
+    
+          postForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const postId = document.getElementById('post-image').getAttribute('data-edit-id');
+            const newPost = {
+              title: document.getElementById('post-title').value,
+              description: document.getElementById('post-description').value,
+              price: parseFloat(document.getElementById('post-price').value),
+              category: document.getElementById('post-category').value,
+              image: document.getElementById('post-image').files[0].name // Save only the image name
+            };
+            
+            // Assume the image is uploaded elsewhere and only the image name is saved here
+            if (postId) {
+              updatePost(postId, newPost);
+              document.querySelector('form button').textContent = 'Add Post';
+              document.getElementById('post-image').removeAttribute('data-edit-id');
+            } else {
+              addPost(newPost);
+            }
+            postForm.reset();
+          });
+    
+          window.editPost = function (postId) {
+            fetch(`${apiUrl}/products/${postId}`)
+              .then(response => response.json())
+              .then(post => {
+                document.getElementById('post-title').value = post.title;
+                document.getElementById('post-description').value = post.description;
+                document.getElementById('post-price').value = post.price;
+                document.getElementById('post-category').value = post.category;
+                document.getElementById('post-image').setAttribute('data-edit-id', post._id);
+                document.querySelector('form button').textContent = 'Update Post';
+              })
+              .catch(error => console.error('Error fetching product details:', error));
+          };
+    
+          window.deletePost = function (postId) {
+            deletePost(postId);
+          };
+    
+          fetchCategories();
+          fetchPosts();
+        });
+      </script>
+</body>
+</html>

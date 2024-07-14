@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Farmer Product</title>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 10px;
+        }
+
+        .admin-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            box-sizing: border-box;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .admin-container {
+                width: 100%;
+                padding: 15px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            button {
+                font-size: 14px;
+                padding: 8px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <h2>Add New Farmer Product</h2>
+        <form id="add-product-form" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="product-name">Product Name</label>
+                <input type="text" id="product-name" name="productName" required>
+            </div>
+            <div class="form-group">
+                <label for="product-description">Product Description</label>
+                <textarea id="product-description" name="productDescription" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="product-price">Product Price</label>
+                <input type="number" id="product-price" name="productPrice" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="product-category">Product Category</label>
+                <select id="product-category" name="productCategory" required>
+                    <option value="" disabled selected>Select a category</option>
+                    <option value="fruits">Fruits</option>
+                    <option value="vegetables">Vegetables</option>
+                    <option value="dairy">Dairy</option>
+                    <option value="daily-products">Daily Products</option>
+                    <!-- More categories can be added here -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="product-image">Product Image</label>
+                <input type="file" id="product-image" name="productImage" required>
+              </div>
+              <button type="button" onclick="submitForm()">Add Product</button>
+            </form>
+    </div>
+
+    <script>
+  
+    const apiUrl = 'http://localhost:3000/api'; // Replace with your actual API URL
+
+    function submitForm() {
+    const form = document.getElementById('add-product-form');
+    const productName = form.elements['productName'].value;
+    const productDescription = form.elements['productDescription'].value;
+    const productPrice = form.elements['productPrice'].value;
+    const productCategory = form.elements['productCategory'].value;
+    const productImage = form.elements['productImage'].value;
+
+    if (!productName || !productDescription || !productPrice || !productCategory || !productImage) {
+      alert('Please fill in all required fields');
+      return;
+    }
+
+    const formData = new FormData(form);
+
+    fetch(`${apiUrl}/farmeraddproduct/add`, {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('Success:', data);
+      form.reset();
+      alert('Product added successfully!');
+      // Redirect to manage products page or update product listing
+      // Example: window.location.href = '/manageproducts';
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('Failed to add product. Please try again.');
+    });
+  }
+</script>
+
+
+</body>
+</html>
